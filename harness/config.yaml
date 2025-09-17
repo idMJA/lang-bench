@@ -1,0 +1,60 @@
+globals:
+  sieve_N: 5000000       # 5e6
+  sort_N: 2000000        # 2e6
+  matmul_n: 256
+  kmp_N: 5000000
+  kmp_M: 16
+
+tasks:
+  - name: "sieve_primes"
+    args: "{sieve_N}"
+  - name: "sort_ints"
+    args: "{sort_N}"
+  - name: "matmul_f64"
+    args: "{matmul_n}"
+  - name: "string_kmp"
+    args: "{kmp_N} {kmp_M}"
+
+runs:
+  warmup: 1
+  repeat: 3
+  timeout_sec: 600
+
+measure:
+  mode: "python" # atau "external_time"
+  external_time_cmd: "/usr/bin/time -f wall=%E,user=%U,sys=%S,maxrss=%M"
+
+languages:
+  - id: "c"
+    build: "bash languages/c/build.sh"
+    run: "languages/c/multi {task} {args}"
+  - id: "cpp"
+    build: "bash languages/cpp/build.sh"
+    run: "languages/cpp/multi {task} {args}"
+  - id: "rust"
+    build: "bash languages/rust/build.sh"
+    run: "languages/rust/multi {task} {args}"
+  - id: "go"
+    build: "bash languages/go/build.sh"
+    run: "languages/go/multi {task} {args}"
+  - id: "java"
+    build: "bash languages/java/build.sh"
+    run: "java -cp languages/java/out bench.Main {task} {args}"
+  - id: "kotlin"
+    build: "bash languages/kotlin/build.sh"
+    run: "java -jar languages/kotlin/Multi.jar {task} {args}"
+  - id: "csharp"
+    build: "bash languages/csharp/build.sh"
+    run: "dotnet languages/csharp/out/Multi.dll {task} {args}"
+  - id: "swift"
+    build: "bash languages/swift/build.sh"
+    run: "languages/swift/multi {task} {args}"
+  - id: "node"
+    build: ""
+    run: "node languages/node/multi.js {task} {args}"
+  - id: "bun"
+    build: ""
+    run: "bun languages/bun/multi.js {task} {args}"
+  - id: "python"
+    build: ""
+    run: "python3 languages/python/multi.py {task} {args}"

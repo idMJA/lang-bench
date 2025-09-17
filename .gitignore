@@ -1,0 +1,18 @@
+# build outputs
+languages/c/multi
+languages/cpp/multi
+languages/go/multi
+languages/rust/multi
+languages/java/out
+languages/kotlin/Multi.jar
+languages/csharp/out
+languages/swift/multi
+
+# caches & temp
+results/
+__pycache__/
+*.pyc
+target/
+bin/
+obj/
+*.class
