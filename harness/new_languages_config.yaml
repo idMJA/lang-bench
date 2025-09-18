@@ -1,0 +1,47 @@
+globals:
+  sieve_N: 1000000       # 1M for quick test
+  sort_N: 500000         # 500k for quick test  
+  matmul_n: 128          # 128x128 for quick test
+  kmp_N: 1000000
+  kmp_M: 16
+
+tasks:
+  - name: "sieve_primes"
+    args: "{sieve_N}"
+  - name: "sort_ints"
+    args: "{sort_N}"
+  - name: "matmul_f64"
+    args: "{matmul_n}"
+  - name: "string_kmp"
+    args: "{kmp_N} {kmp_M}"
+
+runs:
+  warmup: 1
+  repeat: 2
+  timeout_sec: 60
+
+measure:
+  mode: "python"
+
+languages:
+  - id: "d"
+    build: "bash languages/d/build.sh"
+    run: "languages/d/multi {task} {args}"
+  - id: "nim"
+    build: "bash languages/nim/build.sh"
+    run: "languages/nim/multi {task} {args}"
+  - id: "pypy"
+    build: "bash languages/pypy/build.sh"
+    run: "pypy3 languages/pypy/multi.py {task} {args}"
+  - id: "deno"
+    build: "bash languages/deno/build.sh"
+    run: "deno run languages/deno/multi.js {task} {args}"
+  - id: "elixir"
+    build: "bash languages/elixir/build.sh"
+    run: "elixir languages/elixir/multi.exs {task} {args}"
+  - id: "lua"
+    build: "bash languages/lua/build.sh"
+    run: "lua5.4 languages/lua/multi.lua {task} {args}"
+  - id: "julia"
+    build: "bash languages/julia/build.sh"
+    run: "julia languages/julia/multi.jl {task} {args}"

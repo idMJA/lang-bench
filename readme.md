@@ -16,7 +16,7 @@ Output per task:
 - matmul_f64: hex64 bit-pattern of sum(C) (float64)
 - string_kmp: count
 
-Included languages: C, C++, Rust, Go, Java, Kotlin, C#, Swift, Node.js, Bun, Python.
+Included languages: C, C++, Rust, Go, Java, Kotlin, C#, Swift, Node.js, Bun, Python, D (LDC), Nim, PyPy, Deno, Elixir, Lua, Julia.
 
 ## Run (Bun)
 This repo now includes a Bun-based harness. To run the full benchmark using Bun:

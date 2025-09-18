@@ -10,6 +10,13 @@ build:
 	@bash -lc "if [ -f languages/kotlin/build.sh ]; then bash languages/kotlin/build.sh; fi"
 	@bash -lc "if [ -f languages/csharp/build.sh ]; then bash languages/csharp/build.sh; fi"
 	@bash -lc "if [ -f languages/swift/build.sh ]; then bash languages/swift/build.sh; fi"
+	@bash -lc "if [ -f languages/d/build.sh ]; then bash languages/d/build.sh; fi"
+	@bash -lc "if [ -f languages/nim/build.sh ]; then bash languages/nim/build.sh; fi"
+	@bash -lc "if [ -f languages/pypy/build.sh ]; then bash languages/pypy/build.sh; fi"
+	@bash -lc "if [ -f languages/deno/build.sh ]; then bash languages/deno/build.sh; fi"
+	@bash -lc "if [ -f languages/elixir/build.sh ]; then bash languages/elixir/build.sh; fi"
+	@bash -lc "if [ -f languages/lua/build.sh ]; then bash languages/lua/build.sh; fi"
+	@bash -lc "if [ -f languages/julia/build.sh ]; then bash languages/julia/build.sh; fi"
 	@echo "Build complete."
 
 bench:
@@ -19,6 +26,7 @@ bench:
 clean:
 	@rm -rf results \
 		languages/c/multi languages/cpp/multi languages/go/multi languages/rust/multi \
-		languages/java/out languages/kotlin/Multi.jar languages/csharp/out languages/swift/multi
+		languages/java/out languages/kotlin/Multi.jar languages/csharp/out languages/swift/multi \
+		languages/d/multi languages/d/*.o languages/nim/multi languages/elixir/*.beam
 	@find languages -name "__pycache__" -type d -exec rm -rf {} +
 	@echo "Clean complete."
