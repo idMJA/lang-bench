@@ -1,0 +1,181 @@
+name: Multi-Language Benchmark
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    # Install Node.js for the harness
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    # Install Python (CPython and PyPy)
+    - name: Setup Python and PyPy
+      uses: actions/setup-python@v5
+      with:
+        python-version: |
+          3.11
+          pypy-3.10
+    
+    # Install Julia
+    - name: Setup Julia
+      uses: julia-actions/setup-julia@v2
+      with:
+        version: '1'
+    
+    # Install Deno
+    - name: Setup Deno
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: vx.x.x
+    
+    # Install Elixir/Erlang
+    - name: Setup Beam
+      uses: erlef/setup-beam@v1
+      with:
+        otp-version: 'latest'
+        elixir-version: 'latest'
+    
+    # Install D (LDC)
+    - name: Setup D
+      uses: dlang-community/setup-dlang@v1
+      with:
+        compiler: ldc-latest
+    
+    # Install system packages (C/C++, Go, Rust, Java, etc.)
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential lua5.4 liblua5.4-dev
+        
+    # Install Rust
+    - name: Setup Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+    
+    # Install Go
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: 'stable'
+    
+    # Install Java
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+    
+    # Install .NET
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x'
+    
+    # Install Nim
+    - name: Install Nim
+      run: |
+        curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y
+        echo "$HOME/.nimble/bin" >> $GITHUB_PATH
+      env:
+        CHOOSENIM_CHOOSE_VERSION: "stable"
+    
+    # Install Zig
+    - name: Install Zig
+      run: |
+        wget -q https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
+        tar -xf zig-linux-x86_64-0.13.0.tar.xz
+        sudo mv zig-linux-x86_64-0.13.0 /opt/zig
+        sudo ln -s /opt/zig/zig /usr/local/bin/zig
+    
+    # Install Swift
+    - name: Install Swift
+      run: |
+        wget -q https://download.swift.org/swift-6.0.3-release/ubuntu2204/swift-6.0.3-RELEASE/swift-6.0.3-RELEASE-ubuntu22.04.tar.gz
+        tar -xf swift-6.0.3-RELEASE-ubuntu22.04.tar.gz
+        sudo mv swift-6.0.3-RELEASE-ubuntu22.04 /opt/swift
+        echo "/opt/swift/usr/bin" >> $GITHUB_PATH
+    
+    # Install Kotlin
+    - name: Install Kotlin
+      run: |
+        wget -q https://github.com/JetBrains/kotlin/releases/latest/download/kotlin-compiler.zip
+        unzip -q kotlin-compiler.zip
+        sudo mv kotlinc /opt/kotlin
+        echo "/opt/kotlin/bin" >> $GITHUB_PATH
+    
+    # Install Bun
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+    
+    # Install harness dependencies
+    - name: Install dependencies
+      run: npm install js-yaml
+    
+    # Cache dependencies
+    - name: Cache Nim
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.nimble
+          ~/.choosenim
+        key: nim-${{ runner.os }}
+    
+    - name: Cache Julia
+      uses: actions/cache@v4
+      with:
+        path: ~/.julia
+        key: julia-${{ runner.os }}
+    
+    - name: Cache Deno
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/deno
+        key: deno-${{ runner.os }}
+    
+    # Build all languages
+    - name: Build languages
+      run: make build
+    
+    # Run the benchmark
+    - name: Run benchmark
+      run: node harness/run_bench.js harness/config.yaml
+    
+    # Upload results as artifacts
+    - name: Upload results
+      uses: actions/upload-artifact@v4
+      with:
+        name: benchmark-results
+        path: |
+          results/summary.json
+          results/summary.csv
+          results/summary.svg
+    
+    # Add results to job summary
+    - name: Add results to summary
+      if: always()
+      run: |
+        echo "## Benchmark Results" >> $GITHUB_STEP_SUMMARY
+        if [ -f results/summary.svg ]; then
+          echo "![Benchmark Results](results/summary.svg)" >> $GITHUB_STEP_SUMMARY
+        fi
+        if [ -f results/summary.json ]; then
+          echo "### Raw Results" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`json" >> $GITHUB_STEP_SUMMARY
+          cat results/summary.json >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        fi
