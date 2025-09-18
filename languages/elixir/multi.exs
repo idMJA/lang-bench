@@ -68,7 +68,8 @@ defmodule Multi do
     sum = Enum.sum(c)
     
     <<bits::64>> = <<sum::float>>
-    IO.puts(:io_lib.format("~16.16.0b", [bits]))
+    hex_str = :io_lib.format("~16.16.0b", [bits]) |> List.to_string() |> String.downcase()
+    IO.puts(hex_str)
   end
 
   defp generate_float_array(0, seed, acc, _inv), do: {Enum.reverse(acc), seed}

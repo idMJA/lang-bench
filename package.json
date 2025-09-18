@@ -1,5 +1,17 @@
 {
+  "name": "lang-bench",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Multi-language benchmark harness",
+  "main": "harness/run_bench.js",
+  "scripts": {
+    "bench": "node harness/run_bench.js",
+    "build": "make build",
+    "clean": "make clean"
+  },
   "dependencies": {
     "js-yaml": "^4.1.0"
-  }
+  },
+  "keywords": ["benchmark", "performance", "multi-language"],
+  "license": "MIT"
 }

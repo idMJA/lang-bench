@@ -37,7 +37,7 @@ jobs:
     - name: Setup Deno
       uses: denoland/setup-deno@v1
       with:
-        deno-version: vx.x.x
+        deno-version: v1.x
     
     # Install Elixir/Erlang
     - name: Setup Beam

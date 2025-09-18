@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 function lcg_next!(s::Ref{UInt32})
-    s[] = s[] * 1664525 + 1013904223
+    s[] = UInt32((UInt64(s[]) * 1664525 + 1013904223) & 0xFFFFFFFF)
     return s[]
 end
 
