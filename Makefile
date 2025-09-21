@@ -24,7 +24,7 @@ bench:
 	@bun harness/run_bench.js harness/config.yaml
 
 clean:
-	@rm -rf results \
+	@rm -rf \
 		languages/c/multi languages/cpp/multi languages/go/multi languages/rust/multi \
 		languages/java/out languages/kotlin/Multi.jar languages/csharp/out languages/swift/multi \
 		languages/d/multi languages/d/*.o languages/nim/multi languages/elixir/*.beam

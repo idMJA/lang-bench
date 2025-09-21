@@ -1,0 +1,13 @@
+# build outputs
+c/multi
+cpp/multi
+go/multi
+rust/multi
+java/out
+kotlin/Multi.jar
+csharp/out
+swift/multi
+elixir/_build
+julia/multi
+lua/multi
+nim/multi

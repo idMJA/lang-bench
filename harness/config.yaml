@@ -72,7 +72,7 @@ languages:
     run: "deno run languages/deno/multi.js {task} {args}"
   - id: "elixir"
     build: "bash languages/elixir/build.sh"
-    run: "elixir languages/elixir/multi.exs {task} {args}"
+    run: "bash languages/elixir/run.sh {task} {args}"
   - id: "lua"
     build: "bash languages/lua/build.sh"
     run: "lua5.4 languages/lua/multi.lua {task} {args}"
