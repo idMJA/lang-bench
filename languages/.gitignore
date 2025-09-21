@@ -11,3 +11,6 @@ elixir/_build
 julia/multi
 lua/multi
 nim/multi
+d/*.o
+d/multi
+zig/multi

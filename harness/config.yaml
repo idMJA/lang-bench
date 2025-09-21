@@ -79,3 +79,6 @@ languages:
   - id: "julia"
     build: "bash languages/julia/build.sh"
     run: "julia languages/julia/multi.jl {task} {args}"
+  - id: "zig"
+    build: "bash languages/zig/build.sh"
+    run: "languages/zig/multi {task} {args}"
